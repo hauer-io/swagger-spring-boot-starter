@@ -1,5 +1,6 @@
 package io.hauer.spring
 
+import io.hauer.spring.SwaggerAutoConfiguration.Companion.CONFIG_PREFIX
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 /**
@@ -11,12 +12,43 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class SwaggerConfigurationProperties {
 
     /**
-    Restrict the showed spec to specified regex
+    The default/global values for dockets
      */
-    var regex = ".*"
+    var default = SwaggerDefaultDocketInformation()
 
     /**
-    Restrict the showed spec to specified base package and all sub packages.
+     * Map for possible multiple dockets
      */
-    var basePackage = ""
+    var docket: Map<String, SwaggerDocketInformation>? = null
+
+    class SwaggerDefaultDocketInformation {
+
+        /**
+        Restrict the showed spec to specified regex
+         */
+        var regex: String = ".*"
+
+        /**
+        Restrict the showed spec to specified base package and all sub packages.
+         */
+        var basePackage = ""
+    }
+
+    class SwaggerDocketInformation() {
+
+        constructor(default: SwaggerDefaultDocketInformation) : this() {
+            this.regex = default.regex
+            this.basePackage = default.basePackage
+        }
+
+        /**
+        Restrict the showed spec to specified regex
+         */
+        var regex: String? = null
+
+        /**
+        Restrict the showed spec to specified base package and all sub packages.
+         */
+        var basePackage: String? = null
+    }
 }

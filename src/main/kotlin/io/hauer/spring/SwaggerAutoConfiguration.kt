@@ -7,11 +7,8 @@ import org.springframework.boot.context.properties.bind.Binder
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
 import org.springframework.web.WebApplicationInitializer
-import springfox.documentation.builders.PathSelectors
-import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.spi.DocumentationType
-import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
+import java.util.*
 
 /**
  * @author Jan Hauer
@@ -24,19 +21,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 class SwaggerAutoConfiguration {
 
     @Bean
-    fun swaggerBeanFactoryPostProcessor(environment: Environment) = BeanFactoryPostProcessor { beanFactory ->
+    fun swaggerBeanFactoryPostProcessor(environment: Environment, swaggerDocketFactory: SwaggerDocketFactory) = BeanFactoryPostProcessor { beanFactory ->
         Binder.get(environment) //
                 .bind(CONFIG_PREFIX, SwaggerConfigurationProperties::class.java) //
                 .ifBound { properties ->
-                    beanFactory.registerSingleton("SwaggerDocket", docket(properties.basePackage, properties.regex))
+                    properties.docket
+                            ?: Collections.singletonMap("default", SwaggerConfigurationProperties.SwaggerDocketInformation(properties.default))
+                                    .forEach { name, info ->
+                                        beanFactory.registerSingleton("${name}SwaggerDocket", swaggerDocketFactory.create(name, info, properties.default))
+                                    }
                 }
     }
+
+    @Bean
+    fun docketFactory() = SwaggerDocketFactory()
+
+    companion object {
+        const val CONFIG_PREFIX = "io.hauer.spring.swagger"
+    }
 }
-
-const val CONFIG_PREFIX = "io.hauer.spring.swagger"
-
-private fun docket(basePackage: String, pathRegex: String) = Docket(DocumentationType.SWAGGER_2) //
-        .select() //
-        .apis(RequestHandlerSelectors.basePackage(basePackage)) //
-        .paths(PathSelectors.regex(pathRegex)) //
-        .build()
