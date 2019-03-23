@@ -1,6 +1,6 @@
-package io.hauer.spring
+package io.hauer
 
-import io.hauer.spring.SwaggerAutoConfiguration.Companion.CONFIG_PREFIX
+import io.hauer.SwaggerAutoConfiguration.Companion.CONFIG_PREFIX
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 /**

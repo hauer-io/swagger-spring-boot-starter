@@ -1,4 +1,4 @@
-package io.hauer.spring
+package io.hauer
 
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -1,4 +1,4 @@
-package io.hauer.spring
+package io.hauer
 
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
@@ -9,7 +9,7 @@ import springfox.documentation.spring.web.plugins.Docket
 import java.util.*
 
 class SwaggerDocketFactory {
-    fun create (name: String, info:SwaggerConfigurationProperties.SwaggerDocketInformation,
+    fun create (name: String, info: SwaggerConfigurationProperties.SwaggerDocketInformation,
                 default: SwaggerConfigurationProperties.SwaggerDefaultDocketInformation) : Docket
             =  Docket(DocumentationType.SWAGGER_2) //
                     .groupName(name)

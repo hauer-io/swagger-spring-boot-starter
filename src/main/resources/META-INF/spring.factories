@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.hauer.spring.SwaggerAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.hauer.SwaggerAutoConfiguration

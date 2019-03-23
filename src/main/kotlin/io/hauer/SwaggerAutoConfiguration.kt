@@ -1,4 +1,4 @@
-package io.hauer.spring
+package io.hauer
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -37,6 +37,6 @@ class SwaggerAutoConfiguration {
     fun docketFactory() = SwaggerDocketFactory()
 
     companion object {
-        const val CONFIG_PREFIX = "io.hauer.spring.swagger"
+        const val CONFIG_PREFIX = "io.hauer.swagger"
     }
 }
