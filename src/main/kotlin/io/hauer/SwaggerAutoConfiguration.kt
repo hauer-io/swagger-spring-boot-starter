@@ -2,6 +2,7 @@ package io.hauer
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.context.properties.bind.Binder
 import org.springframework.context.annotation.Bean
@@ -34,6 +35,7 @@ class SwaggerAutoConfiguration {
     private fun Environment.bindSwaggerConfig() = Binder.get(this).bind(CONFIG_PREFIX, SwaggerConfig::class.java)!!
 
     @Bean
+    @ConditionalOnMissingBean
     fun swaggerProducer() = SwaggerProducerImpl()
 
     companion object {
