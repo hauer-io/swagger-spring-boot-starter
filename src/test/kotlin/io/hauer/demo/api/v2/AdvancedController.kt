@@ -1,4 +1,4 @@
-package io.hauer.api.v2
+package io.hauer.demo.api.v2
 
 import org.springframework.web.bind.annotation.*
 
