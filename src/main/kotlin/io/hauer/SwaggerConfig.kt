@@ -2,6 +2,7 @@ package io.hauer
 
 import io.hauer.SwaggerAutoConfiguration.Companion.CONFIG_PREFIX
 import org.springframework.boot.context.properties.ConfigurationProperties
+import java.util.*
 
 /**
  * @author Jan Hauer
@@ -9,17 +10,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  */
 
 @ConfigurationProperties(prefix = CONFIG_PREFIX)
-class SwaggerProperties {
+class SwaggerConfig {
 
     /**
-    The default/global values for groups
+    The default/global values for group
      */
     var default = Default()
 
     /**
      * Map for possible multiple groups
      */
-    var groups: Map<String, Group>? = null
+    var groups: Map<String, Group> = Collections.emptyMap()
 
     class Default {
 
