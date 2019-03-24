@@ -9,19 +9,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  */
 
 @ConfigurationProperties(prefix = CONFIG_PREFIX)
-class SwaggerConfigurationProperties {
+class SwaggerProperties {
 
     /**
-    The default/global values for dockets
+    The default/global values for groups
      */
-    var default = SwaggerDefaultDocketInformation()
+    var default = Default()
 
     /**
-     * Map for possible multiple dockets
+     * Map for possible multiple groups
      */
-    var docket: Map<String, SwaggerDocketInformation>? = null
+    var groups: Map<String, Group>? = null
 
-    class SwaggerDefaultDocketInformation {
+    class Default {
 
         /**
         Restrict the showed spec to specified regex
@@ -34,9 +34,9 @@ class SwaggerConfigurationProperties {
         var basePackage = ""
     }
 
-    class SwaggerDocketInformation() {
+    class Group() {
 
-        constructor(default: SwaggerDefaultDocketInformation) : this() {
+        constructor(default: Default) : this() {
             this.regex = default.regex
             this.basePackage = default.basePackage
         }

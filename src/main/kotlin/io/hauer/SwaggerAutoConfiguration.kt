@@ -17,24 +17,24 @@ import java.util.*
 
 @ConditionalOnClass(WebApplicationInitializer::class)
 @EnableSwagger2
-@EnableConfigurationProperties(SwaggerConfigurationProperties::class)
+@EnableConfigurationProperties(SwaggerProperties::class)
 class SwaggerAutoConfiguration {
 
     @Bean
-    fun swaggerBeanFactoryPostProcessor(environment: Environment, swaggerDocketFactory: SwaggerDocketFactory) = BeanFactoryPostProcessor { beanFactory ->
+    fun swaggerBeanFactoryPostProcessor(environment: Environment, swaggerFactory: SwaggerFactory) = BeanFactoryPostProcessor { beanFactory ->
         Binder.get(environment) //
-                .bind(CONFIG_PREFIX, SwaggerConfigurationProperties::class.java) //
+                .bind(CONFIG_PREFIX, SwaggerProperties::class.java) //
                 .ifBound { properties ->
-                    properties.docket
-                            ?: Collections.singletonMap("default", SwaggerConfigurationProperties.SwaggerDocketInformation(properties.default))
+                    properties.groups
+                            ?: Collections.singletonMap("default", SwaggerProperties.Group(properties.default))
                                     .forEach { name, info ->
-                                        beanFactory.registerSingleton("${name}SwaggerDocket", swaggerDocketFactory.create(name, info, properties.default))
+                                        beanFactory.registerSingleton("${name}SwaggerDocket", swaggerFactory.create(name, info, properties.default))
                                     }
                 }
     }
 
     @Bean
-    fun docketFactory() = SwaggerDocketFactory()
+    fun swaggerFactory() = SwaggerFactory()
 
     companion object {
         const val CONFIG_PREFIX = "io.hauer.swagger"

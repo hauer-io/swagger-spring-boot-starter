@@ -8,9 +8,9 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import java.util.*
 
-class SwaggerDocketFactory {
-    fun create (name: String, info: SwaggerConfigurationProperties.SwaggerDocketInformation,
-                default: SwaggerConfigurationProperties.SwaggerDefaultDocketInformation) : Docket
+class SwaggerFactory {
+    fun create (name: String, info: SwaggerProperties.Group,
+                default: SwaggerProperties.Default) : Docket
             =  Docket(DocumentationType.SWAGGER_2) //
                     .groupName(name)
                     .select() //
