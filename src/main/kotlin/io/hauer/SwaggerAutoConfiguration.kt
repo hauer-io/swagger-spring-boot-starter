@@ -20,7 +20,7 @@ class SwaggerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun swaggerPostProcessor(environment: Environment, producer: SwaggerProducer): SwaggerPostProcessor = SwaggerPostProcessorImpl(environment, producer)
+    fun swaggerPostProcessor(environment: Environment, producer: SwaggerProducer, transformer: List<SwaggerTransformer>): SwaggerPostProcessor = SwaggerPostProcessorImpl(environment, producer, transformer)
 
     @Bean
     @ConditionalOnMissingBean
