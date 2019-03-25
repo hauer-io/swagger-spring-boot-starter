@@ -12,7 +12,7 @@
 
     <groupId>io.hauer</groupId>
     <artifactId>swagger-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>swagger-spring-boot-starter</name>
     <description>Autoconfiguration for Swagger in Spring Boot Web application</description>
 
