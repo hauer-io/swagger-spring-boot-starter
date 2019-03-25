@@ -29,6 +29,15 @@ class SwaggerProducerImpl : SwaggerProducer {
                     .apis(RequestHandlerSelectors.basePackage(group.basePackage ?: default.basePackage)) //
                     .paths(PathSelectors.regex(group.regex ?: default.regex)) //
                     .build()
-                    .apiInfo(ApiInfo("", "", "", "", Contact("", "", ""), "", "", Collections.emptyList()))!!
+                    .apiInfo(ApiInfo(group.title ?: default.title,
+                            group.description ?: default.description,
+                            group.version ?: default.version,
+                            group.termsOfServiceUrl ?: default.termsOfServiceUrl,
+                            Contact(group.contactName ?: default.contactName,
+                                    group.contactUrl ?: default.contactUrl,
+                                    group.contactEmail ?: default.contactEmail),
+                            group.license ?: default.license,
+                            group.licenseUrl ?: default.licenseUrl,
+                            Collections.emptyList()))!!
 
 }
