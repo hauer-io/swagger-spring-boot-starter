@@ -2,6 +2,7 @@ package io.hauer
 
 import io.hauer.SwaggerAutoConfiguration.Companion.CONFIG_PREFIX
 import org.springframework.boot.context.properties.ConfigurationProperties
+import springfox.documentation.service.VendorExtension
 import java.util.*
 
 /**
@@ -15,80 +16,14 @@ class SwaggerConfig {
     /**
     The default/global values for group
      */
-    var default = Default()
+    var default = Info()
 
     /**
      * Map for possible multiple groups
      */
-    var groups: Map<String, Group> = Collections.emptyMap()
+    var groups: Map<String, Info> = Collections.emptyMap()
 
-    class Default {
-
-        /**
-        Restrict the showed spec to specified regex
-         */
-        var regex: String = ".*"
-
-        /**
-        Restrict the showed spec to specified base package and all sub packages.
-         */
-        var basePackage = ""
-
-        /**
-         Title of the group
-         */
-        var title = ""
-
-        /**
-         Description of the group
-         */
-        var description = ""
-
-        /**
-         Version of the group
-         */
-        var version = ""
-
-        /**
-         url to terms of service
-         */
-        var termsOfServiceUrl = ""
-
-        /**
-         license
-         */
-        var license = ""
-
-        /**
-        license url
-         */
-        var licenseUrl = ""
-
-
-        /**
-         contact name
-         */
-        var contactName = ""
-
-        /**
-         contact url
-         */
-        var contactUrl = ""
-
-        /**
-         contact email
-         */
-        var contactEmail = ""
-    }
-
-
-    class Group() {
-
-        constructor(default: Default) : this() {
-            this.regex = default.regex
-            this.basePackage = default.basePackage
-        }
-
+    class Info {
         /**
         Restrict the showed spec to specified regex
          */
@@ -145,5 +80,19 @@ class SwaggerConfig {
         contact email
          */
         var contactEmail: String? = null
+
+        /**
+         vendor extentions
+         */
+        var vendorExtensions = mutableListOf<VendorExtension<Any>>()
+        /**
+          produced media type values
+         */
+        var produces = mutableSetOf<String>()
+
+        /**
+         consumed media type values
+         */
+        var consumes = mutableSetOf<String>()
     }
 }

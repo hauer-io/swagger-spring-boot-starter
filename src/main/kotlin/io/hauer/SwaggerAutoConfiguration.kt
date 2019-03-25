@@ -24,7 +24,7 @@ class SwaggerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun swaggerProducer(): SwaggerProducer = SwaggerProducerImpl()
+    fun swaggerProducer(): SwaggerProducer = object : SwaggerProducer{}
 
     companion object {
         const val CONFIG_PREFIX = "io.hauer.swagger"

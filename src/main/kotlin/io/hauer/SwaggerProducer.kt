@@ -6,38 +6,33 @@ import springfox.documentation.service.ApiInfo
 import springfox.documentation.service.Contact
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
-import java.util.*
 
 interface SwaggerProducer {
-    fun generate(default: SwaggerConfig.Default, groups: Map<String, SwaggerConfig.Group>): List<Docket>
-}
-
-class SwaggerProducerImpl : SwaggerProducer {
-
-    override fun generate(default: SwaggerConfig.Default, groups: Map<String, SwaggerConfig.Group>): List<Docket> {
+    fun generate(default: SwaggerConfig.Info, groups: Map<String, SwaggerConfig.Info>): List<Docket> {
         return if (groups.isEmpty()) {
-            listOf(createDocket("default", SwaggerConfig.Group(default), default))
+            listOf(createDocket("default", default, default))
         } else {
             groups.map { entry -> createDocket(entry.key, entry.value, default) }
         }
     }
 
-    private fun createDocket(name: String, group: SwaggerConfig.Group, default: SwaggerConfig.Default) = //
+    fun createDocket(name: String, group: SwaggerConfig.Info, default: SwaggerConfig.Info) = //
             Docket(DocumentationType.SWAGGER_2) //
                     .groupName(name)
+                    .consumes(group.consumes.ifEmpty { default.consumes })
+                    .produces(group.produces.ifEmpty { default.produces })
                     .select() //
-                    .apis(RequestHandlerSelectors.basePackage(group.basePackage ?: default.basePackage)) //
-                    .paths(PathSelectors.regex(group.regex ?: default.regex)) //
+                    .apis(RequestHandlerSelectors.basePackage(group.basePackage ?: default.basePackage ?: "")) //
+                    .paths(PathSelectors.regex(group.regex ?: default.regex ?: ".*")) //
                     .build()
-                    .apiInfo(ApiInfo(group.title ?: default.title,
-                            group.description ?: default.description,
-                            group.version ?: default.version,
-                            group.termsOfServiceUrl ?: default.termsOfServiceUrl,
-                            Contact(group.contactName ?: default.contactName,
-                                    group.contactUrl ?: default.contactUrl,
-                                    group.contactEmail ?: default.contactEmail),
-                            group.license ?: default.license,
-                            group.licenseUrl ?: default.licenseUrl,
-                            Collections.emptyList()))!!
-
+                    .apiInfo(ApiInfo(group.title ?: default.title ?: "",
+                            group.description ?: default.description ?: "",
+                            group.version ?: default.version ?: "",
+                            group.termsOfServiceUrl ?: default.termsOfServiceUrl ?: "",
+                            Contact(group.contactName ?: default.contactName ?: "",
+                                    group.contactUrl ?: default.contactUrl ?: "",
+                                    group.contactEmail ?: default.contactEmail ?: ""),
+                            group.license ?: default.license ?: "",
+                            group.licenseUrl ?: default.licenseUrl ?: "",
+                            group.vendorExtensions.ifEmpty { default.vendorExtensions }))!!
 }
