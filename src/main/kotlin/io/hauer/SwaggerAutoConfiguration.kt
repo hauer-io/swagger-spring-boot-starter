@@ -26,7 +26,7 @@ class SwaggerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun swaggerProducer(): SwaggerProducer = object : SwaggerProducer{}
+    fun swaggerProducer(): SwaggerProducer = object : SwaggerProducer {}
 
     companion object {
         const val CONFIG_PREFIX = "io.hauer.swagger"
@@ -35,10 +35,12 @@ class SwaggerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     fun swaggerConfigFallbacks(applicationContext: ApplicationContext) = SwaggerConfigFallbacks().also {
-        it.setFallback("basePackage", applicationContext.getBeansWithAnnotation(SpringBootApplication::class.java)
-                .values
+        val basePackage = applicationContext.getBeansWithAnnotation(SpringBootApplication::class.java).values
                 .map { c -> c.javaClass.`package`.name }
-                .ifEmpty { listOf("") }[0])
+                .ifEmpty { listOf("") }[0]
+        it.setFallback("basePackage", basePackage)
         it.setFallback("regex", ".*")
+        it.setFallback("title", "Api Documentation")
+        it.setFallback("description", "Api Documentation for controller in package \"$basePackage\"")
     }
 }
