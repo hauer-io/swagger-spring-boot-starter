@@ -9,11 +9,14 @@ import org.springframework.core.env.Environment
  * @author Jan Hauer
  * @since 1.0
  */
-class SwaggerPostProcessorImpl(private val environment: Environment, private val producer: SwaggerProducer, private val transformer: List<SwaggerTransformer>) : SwaggerPostProcessor {
+class SwaggerPostProcessorImpl(private val environment: Environment,
+                               private val producer: SwaggerProducer,
+                               private val transformer: List<SwaggerTransformer>,
+                               private val fallbacks: SwaggerConfigFallbacks) : SwaggerPostProcessor {
     override fun postProcessBeanFactory(factory: ConfigurableListableBeanFactory) {
         val properties = environment.getSwaggerConfig()
-        producer.generate(properties.default, properties.groups, transformer).forEach {
-            factory.registerSingleton(it.groupName, it)
+        producer.generate(properties.default, properties.groups, transformer, fallbacks).forEach {
+                        factory.registerSingleton(it.groupName, it)
         }
     }
 
