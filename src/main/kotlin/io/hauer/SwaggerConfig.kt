@@ -1,6 +1,5 @@
 package io.hauer
 
-import io.hauer.SwaggerAutoConfiguration.Companion.CONFIG_PREFIX
 import org.springframework.boot.context.properties.ConfigurationProperties
 import springfox.documentation.service.VendorExtension
 import java.util.*
@@ -10,7 +9,7 @@ import java.util.*
  * @since 1.0
  */
 
-@ConfigurationProperties(prefix = CONFIG_PREFIX)
+@ConfigurationProperties(prefix = "swagger")
 class SwaggerConfig {
 
     /**

@@ -1,5 +1,7 @@
 package io.hauer
 
+import io.hauer.SwaggerBaseConfig.Companion.defaultBase
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -22,25 +24,28 @@ class SwaggerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    fun swaggerPostProcessor(environment: Environment, producer: SwaggerProducer, transformer: List<SwaggerTransformer>, fallbacks: SwaggerConfigFallbacks): SwaggerPostProcessor = SwaggerPostProcessorImpl(environment, producer, transformer, fallbacks)
+    fun swaggerBeanFactory(environment: Environment,
+                           producer: SwaggerProducer,
+                           base: SwaggerBaseConfig) = object : SwaggerBeanFactory {
+        override fun postProcessBeanFactory(factory: ConfigurableListableBeanFactory) {
+            val swaggerConfig = environment.getSwaggerConfig()
+            producer.create(base, swaggerConfig.default, swaggerConfig.groups).forEach {
+                factory.registerSingleton("${it.groupName}SwaggerDocket", it)
+            }
+        }
+    }
 
     @Bean
     @ConditionalOnMissingBean
     fun swaggerProducer(): SwaggerProducer = object : SwaggerProducer {}
 
-    companion object {
-        const val CONFIG_PREFIX = "io.hauer.swagger"
-    }
-
     @Bean
     @ConditionalOnMissingBean
-    fun swaggerConfigFallbacks(applicationContext: ApplicationContext) = SwaggerConfigFallbacks().also {
-        val basePackage = applicationContext.getBeansWithAnnotation(SpringBootApplication::class.java).values
-                .map { c -> c.javaClass.`package`.name }
-                .ifEmpty { listOf("") }[0]
-        it.setFallback("basePackage", basePackage)
-        it.setFallback("regex", ".*")
-        it.setFallback("title", "Api Documentation")
-        it.setFallback("description", "Api Documentation for controller in package \"$basePackage\"")
+    fun swaggerBaseConfig(applicationContext: ApplicationContext) = object : SwaggerBaseConfig {
+        override val base = defaultBase.apply {
+            this["basePackage"] = applicationContext.getBeansWithAnnotation(SpringBootApplication::class.java).values
+                    .map { c -> c.javaClass.`package`.name }
+                    .ifEmpty<List<String>, List<String>> { listOf("") }[0]
+        }
     }
 }
