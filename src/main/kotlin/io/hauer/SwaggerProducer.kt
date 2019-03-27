@@ -22,7 +22,7 @@ interface SwaggerProducer {
 
     fun create(base: SwaggerBaseConfig, default: SwaggerConfig.Info, group: SwaggerConfig.Info = default, name: String = "default") = //
             Docket(DocumentationType.SWAGGER_2) //
-                    .groupName(name)
+                    .groupName(group.name ?: name)
                     .consumes(group.consumes.ifEmpty { default.consumes })
                     .produces(group.produces.ifEmpty { default.produces })
                     .apiInfo(ApiInfo(group.title ?: default.title ?: base.get("title"),
@@ -38,5 +38,6 @@ interface SwaggerProducer {
                     .select() //
                     .apis(RequestHandlerSelectors.basePackage(group.basePackage ?: default.basePackage ?: base.get("basePackage"))) //
                     .paths(PathSelectors.regex(group.regex ?: default.regex ?: base.get("regex"))) //
+                    .paths(PathSelectors.ant(group.ant ?: default.ant ?: base.get("ant")))
                     .build()!!
 }

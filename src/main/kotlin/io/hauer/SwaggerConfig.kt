@@ -29,6 +29,11 @@ class SwaggerConfig {
         var regex: String? = null
 
         /**
+        Restrict the showed spec to specified ant pattern
+         */
+        var ant: String? = null
+
+        /**
         Restrict the showed spec to specified base package and all sub packages.
          */
         var basePackage: String? = null
@@ -37,6 +42,11 @@ class SwaggerConfig {
         Title of the group
          */
         var title: String? = null
+
+        /**
+         Name of the group. The name must be unique!
+         */
+        var name: String? = null
 
         /**
         Description of the group

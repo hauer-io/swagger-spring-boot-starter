@@ -7,6 +7,6 @@ interface SwaggerBaseConfig {
 
     companion object {
         const val defaultValue = ""
-        val defaultBase = hashMapOf("regex" to ".*", "title" to "API Documentation")
+        val defaultBase = hashMapOf("regex" to ".*", "ant" to "/**", "title" to "API Documentation")
     }
 }
