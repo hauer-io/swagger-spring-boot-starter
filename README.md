@@ -5,6 +5,7 @@ Tiny starter to simplify your work with swagger-ui in spring projects.
 For examples see [the repository swagger-spring-boot-demo](https://github.com/hauer-io/swagger-spring-boot-demo).
 
 ## News
+* Version **2.0.0** released
 * Version **1.1.0** released
 * Version **1.0.0** released
 * Version **0.3.0** released
